@@ -1,8 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net;
+using MisskeyDotNet.Exceptions;
+using MisskeyDotNet.Extensions;
+using MisskeyDotNet.Models.Authorization;
+using MisskeyDotNet.Models.HttpApi;
+using MisskeyDotNet.Models.HttpApi.Error;
+using MisskeyDotNet.Models.JoinMisskey;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -15,7 +21,7 @@ namespace MisskeyDotNet
         /// <summary>
         /// Get a host name of the connecting Misskey instance.
         /// </summary>
-        public string Host { get; }
+        public InstanceSettings InstanceSettings { get; }
 
         /// <summary>
         /// Get a current API token.
@@ -25,18 +31,18 @@ namespace MisskeyDotNet
         /// <summary>
         /// Initialize a new instance of <see cref="Misskey"/> class.
         /// </summary>
-        /// <param name="host"></param>
-        public Misskey(string host)
+        /// <param name="instanceSettings"></param>
+        public Misskey(InstanceSettings instanceSettings)
         {
-            Host = host;
+            this.InstanceSettings = instanceSettings;
         }
 
         /// <summary>
         /// Initialize a new instance of <see cref="Misskey"/> class.
         /// </summary>
-        /// <param name="host"></param>
+        /// <param name="instanceSettings"></param>
         /// <param name="token"></param>
-        public Misskey(string host, string? token) : this(host)
+        public Misskey(InstanceSettings instanceSettings, string? token) : this(instanceSettings)
         {
             Token = token;
         }
@@ -95,7 +101,7 @@ namespace MisskeyDotNet
         /// <returns></returns>
         public string Export()
         {
-            var s = "Host=" + Host;
+            var s = "Host=" + InstanceSettings.Host;
             if (Token is string)
             {
                 s += "\nToken=" + Token;
@@ -127,7 +133,7 @@ namespace MisskeyDotNet
                 }
             }
 
-            return new Misskey(host, token);
+            return new Misskey(new InstanceSettings(host, null), token);
         }
 
         public async ValueTask<Meta> MetaAsync(bool forceFetch = false)
@@ -161,7 +167,7 @@ namespace MisskeyDotNet
 
         private string GetApiUrl(string endPoint)
         {
-            return "https://" + Host + "/api/" + endPoint;
+            return "https://" + InstanceSettings.Host + "/api/" + endPoint;
         }
 
         private static T Deserialize<T>(string s)

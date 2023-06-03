@@ -1,6 +1,6 @@
 using System;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.HttpApi
 {
     public class Emoji
     {

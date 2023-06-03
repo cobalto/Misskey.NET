@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Extensions
 {
     public static class ObjectExtension
     {

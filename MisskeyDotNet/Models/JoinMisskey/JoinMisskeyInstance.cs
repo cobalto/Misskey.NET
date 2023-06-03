@@ -1,6 +1,7 @@
 using System;
+using MisskeyDotNet.Models.HttpApi;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.JoinMisskey
 {
     public class JoinMisskeyInstance
     {

@@ -2,13 +2,12 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Helpers
 {
-    public static class Helper
+    public static class ProcessHelper
     {
         public static void OpenUrl(string url)
         {
-            // from https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 url = url.Replace("&", "^&");
@@ -24,7 +23,7 @@ namespace MisskeyDotNet
             }
             else
             {
-                throw new NotSupportedException("このプラットフォームはサポートされていません。");
+                throw new NotSupportedException("This platform is not supported.");
             }
         }
     }

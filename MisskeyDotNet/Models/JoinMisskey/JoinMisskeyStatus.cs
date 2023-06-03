@@ -1,4 +1,4 @@
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.JoinMisskey
 {
     public class JoinMisskeyStatus
     {
