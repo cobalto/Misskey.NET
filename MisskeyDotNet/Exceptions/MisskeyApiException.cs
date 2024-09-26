@@ -1,6 +1,7 @@
 using System;
+using MisskeyDotNet.Models.HttpApi.Error;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Exceptions
 {
     [Serializable]
     public class MisskeyApiException : Exception

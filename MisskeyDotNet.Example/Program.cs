@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MisskeyDotNet.Exceptions;
+using MisskeyDotNet.Models.Authorization;
+using MisskeyDotNet.Models.HttpApi;
 
 namespace MisskeyDotNet.Example
 {
@@ -17,16 +19,16 @@ namespace MisskeyDotNet.Example
             }
             else
             {
-                var miAuth = new MiAuth("misskey.io", "Misskey.NET", null, null, Permission.All);
-                if (!miAuth.TryOpenBrowser())
+                var authorizer = new Authorizer(new InstanceSettings("misskey.io", "Misskey.NET", null, null, Permission.All));
+                if (!authorizer.TryOpenBrowser())
                 {
-                    Console.WriteLine("次のURLをお使いのウェブブラウザーで開き、認証を完了させてください。");
-                    Console.WriteLine(miAuth.Url);
+                    Console.WriteLine("Open the following URL in your web browser to complete the authentication.");
+                    Console.WriteLine(authorizer.InstanceSettings.Url);
                 }
-                Console.WriteLine("認可が完了したら、ENTER キーを押してください。");
+                Console.WriteLine("Press ENTER when authorization is complete.");
                 Console.ReadLine();
 
-                io = await miAuth.CheckAsync();
+                io = await authorizer.CheckAsync();
                 await File.WriteAllTextAsync("credential", io.Export());
             }
 
@@ -34,6 +36,7 @@ namespace MisskeyDotNet.Example
             // await SummonError(io);
             // await GetMeta(io);
             await FetchInstances();
+            Console.ReadLine();
         }
 
         private static async ValueTask FetchReactions(Misskey mi)
@@ -79,18 +82,18 @@ namespace MisskeyDotNet.Example
             try
             {
                 var meta = await mi.ApiAsync<Meta>("meta");
-                Console.WriteLine($"インスタンス名: {meta.Name}");
-                Console.WriteLine($"バージョン: {meta.Version}");
-                Console.WriteLine($"説明: {meta.Description}");
-                Console.WriteLine($"管理者: {meta.MaintainerName}");
-                Console.WriteLine($"管理者メール: {meta.MaintainerEmail}");
-                Console.WriteLine($"LTL: {(meta.DisableLocalTimeline ? "いいえ" : "はい")}");
-                Console.WriteLine($"GTL: {(meta.DisableGlobalTimeline ? "いいえ" : "はい")}");
-                Console.WriteLine($"登録可能: {(meta.DisableRegistration ? "いいえ" : "はい")}");
-                Console.WriteLine($"メール: {(meta.EnableEmail ? "はい" : "いいえ")}");
-                Console.WriteLine($"Twitter認証: {(meta.EnableTwitterIntegration ? "はい" : "いいえ")}");
-                Console.WriteLine($"Discord認証: {(meta.EnableDiscordIntegration ? "はい" : "いいえ")}");
-                Console.WriteLine($"GitHub認証: {(meta.EnableGithubIntegration ? "はい" : "いいえ")}");
+                Console.WriteLine($"Instance Name: {meta.Name}");
+                Console.WriteLine($"Version: {meta.Version}");
+                Console.WriteLine($"Description: {meta.Description}");
+                Console.WriteLine($"Administrator: {meta.MaintainerName}");
+                Console.WriteLine($"Contact: {meta.MaintainerEmail}");
+                Console.WriteLine($"Local Timeline: {(meta.DisableLocalTimeline ? "No" : "Yes")}");
+                Console.WriteLine($"Global Timeline: {(meta.DisableGlobalTimeline ? "No" : "Yes")}");
+                Console.WriteLine($"Registration Open: {(meta.DisableRegistration ? "No" : "Yes")}");
+                Console.WriteLine($"E-mail enabled: {(meta.EnableEmail ? "Yes" : "No")}");
+                Console.WriteLine($"Twitter Integration: {(meta.EnableTwitterIntegration ? "Yes" : "No")}");
+                Console.WriteLine($"Discord Integration: {(meta.EnableDiscordIntegration ? "Yes" : "No")}");
+                Console.WriteLine($"GitHub Integration: {(meta.EnableGithubIntegration ? "Yes" : "No")}");
             }
             catch (MisskeyApiException e)
             {
@@ -100,9 +103,9 @@ namespace MisskeyDotNet.Example
         private static async ValueTask FetchInstances()
         {
             var res = await Misskey.JoinMisskeyInstancesApiAsync();
-            Console.WriteLine($"最終更新: {res.Date}");
-            Console.WriteLine($"インスタンス数: {res.Stats.InstancesCount}");
-            Console.WriteLine($"インスタンス一覧:");
+            Console.WriteLine($"Last Update: {res.Date}");
+            Console.WriteLine($"Number of Instances: {res.Stats.InstancesCount}");
+            Console.WriteLine($"Instance List:");
             res.InstancesInfos.Select(meta => " " + meta.Url).ToList().ForEach(Console.WriteLine);
         }
     }

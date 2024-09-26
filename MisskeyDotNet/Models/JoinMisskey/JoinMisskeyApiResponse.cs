@@ -1,6 +1,6 @@
 using System;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.JoinMisskey
 {
     public class JoinMisskeyApiResponse
     {

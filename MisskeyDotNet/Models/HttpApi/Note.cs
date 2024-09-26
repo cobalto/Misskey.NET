@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.HttpApi
 {
     public class Note
     {

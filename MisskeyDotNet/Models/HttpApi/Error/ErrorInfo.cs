@@ -1,4 +1,4 @@
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.HttpApi.Error
 {
     public class ErrorInfo
     {

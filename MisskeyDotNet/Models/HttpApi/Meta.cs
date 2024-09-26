@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Models.HttpApi
 {
     public class Meta
     {

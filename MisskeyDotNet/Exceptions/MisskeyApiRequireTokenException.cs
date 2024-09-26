@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Exceptions
 {
     [Serializable]
     internal class MisskeyApiRequireTokenException : Exception

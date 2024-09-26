@@ -1,8 +1,7 @@
 using System;
 using System.Net;
-using System.Runtime.Serialization;
 
-namespace MisskeyDotNet
+namespace MisskeyDotNet.Exceptions
 {
     [Serializable]
     public class HttpException : Exception
